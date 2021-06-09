@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^2.24.1",
     "apollo-server-micro": "2.11.0",
     "graphql": "14.6.0",
     "next": "latest",
@@ -14,5 +15,8 @@
     "react-dom": "16.13.1",
     "swr": "0.1.18"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prisma": "^2.24.1"
+  }
 }
