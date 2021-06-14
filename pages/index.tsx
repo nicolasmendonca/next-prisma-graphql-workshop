@@ -2,43 +2,37 @@ import React from "react";
 import { request } from "graphql-request";
 import { GetServerSideProps } from "next";
 import { Query } from "../src/generated/graphql";
+interface HomePage {
+  purchases: Number;
+  payments: Number;
+  pokemonList: Query["pokemonList"];
+}
 
-export default function Home({ data }) {
+export default function Home() {
+  const [data, setData] = React.useState<HomePage | string>("");
+  React.useEffect(() => {
+    const data = request<HomePage>(
+      "http://localhost:3000/api/graphql",
+      `
+        query HomePage {
+          purchases: sum(a: 2, b: 7)
+          payments: sum(a: 255, b: 234)
+          pokemonList {
+            id
+            name
+            attacks {
+              id
+              name
+            }
+          }
+        }
+        `
+    ).then(setData);
+  }, []);
+
   return (
     <div>
       <h2>Hola: {JSON.stringify(data)}</h2>
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  interface HomePage {
-    purchases: Number;
-    payments: Number;
-    pokemonList: Query["pokemonList"];
-  }
-
-  const data = await request<HomePage>(
-    "http://localhost:3000/api/graphql",
-    `
-      query HomePage {
-        purchases: sum(a: 2, b: 7)
-        payments: sum(a: 255, b: 234)
-        pokemonList {
-          id
-          name
-          attacks {
-            id
-            name
-          }
-        }
-      }
-    `
-  );
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
