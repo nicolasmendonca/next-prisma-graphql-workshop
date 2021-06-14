@@ -11,8 +11,8 @@ interface HomePage {
 export default function Home() {
   const [data, setData] = React.useState<HomePage | string>("");
   React.useEffect(() => {
-    const data = request<HomePage>(
-      "http://localhost:3000/api/graphql",
+    request<HomePage>(
+      "/api/graphql",
       `
         query HomePage {
           purchases: sum(a: 2, b: 7)
